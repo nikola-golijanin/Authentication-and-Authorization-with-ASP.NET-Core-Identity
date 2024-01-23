@@ -24,6 +24,8 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddTransient<IAuthorizationHandler, HRManagerProbationRequirementHandler>();
 
+builder.Services.AddHttpClient("WeatherAPI", client => { client.BaseAddress = new Uri("http://localhost:5055/"); });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
