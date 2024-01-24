@@ -4,6 +4,7 @@ namespace Web_API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Policy = "AdminOnly")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
