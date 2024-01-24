@@ -24,6 +24,13 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddTransient<IAuthorizationHandler, HRManagerProbationRequirementHandler>();
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddHttpClient("WeatherAPI", client => { client.BaseAddress = new Uri("http://localhost:5055/"); });
 
 var app = builder.Build();
@@ -43,6 +50,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 
