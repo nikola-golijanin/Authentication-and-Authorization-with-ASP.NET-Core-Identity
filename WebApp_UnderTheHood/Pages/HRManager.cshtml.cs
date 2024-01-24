@@ -1,7 +1,11 @@
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
+using WebApp_UnderTheHood.Authorization;
 using WebApp_UnderTheHood.DTO;
+using WebApp_UnderTheHood.Pages.Account;
 
 namespace WebApp_UnderTheHood.Pages;
 
@@ -48,7 +52,7 @@ public class HRManagerModel : PageModel
     private async  Task<JwtToken> Authenticate()
     {            
         var httpClient = httpClientFactory.CreateClient("WeatherAPI");
-        var res = await httpClient.PostAsJsonAsync("auth", new Credential { UserName = "admin", Password = "password" });
+        var res = await httpClient.PostAsJsonAsync("auth", new Credential { UserName = "admin", Password = "admin" });
         res.EnsureSuccessStatusCode();
         string strJwt = await res.Content.ReadAsStringAsync();
         HttpContext.Session.SetString("access_token", strJwt);
