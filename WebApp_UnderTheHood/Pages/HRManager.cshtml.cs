@@ -20,9 +20,13 @@ public class HRManagerModel : PageModel
 
     public async Task OnGetAsync()
     {
-
         var httpClient = httpClientFactory.CreateClient("WeatherAPI");
+        var res = await httpClient.PostAsJsonAsync("auth", new Credential { UserName = "admin", Password = "password" });
+        res.EnsureSuccessStatusCode();
+        string strJwt = await res.Content.ReadAsStringAsync();
+        var token = JsonConvert.DeserializeObject<JwtToken>(strJwt);
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token?.AccessToken ?? string.Empty);
         WeatherForecastItems = await httpClient.GetFromJsonAsync<List<WeatherForecastDTO>>("WeatherForecast")??new List<WeatherForecastDTO>();
     }
-
 }   
